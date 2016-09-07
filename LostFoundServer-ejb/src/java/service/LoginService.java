@@ -10,6 +10,7 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
 import model.User;
+import model.UserDB;
 
 /**
  *
@@ -23,9 +24,9 @@ public class LoginService {
     private UserDao userDao;
 
     public String register(String username, String password){
-        User user = userDao.findUserByUsername(username);
+        UserDB user = userDao.findUserByUsername(username);
         if(user == null){
-            user = new User();
+            user = new UserDB();
             user.setUsername(username);
             user.setPassword(password);
             userDao.create(user);
@@ -34,13 +35,22 @@ public class LoginService {
         return "Userul exista deja";
     }
     
-    public String login(String username, String password){
-        User user = userDao.findUserByUsername(username);
-        if (user!=null 
-                && user.getPassword().equals(password)
+    public boolean login(User user){
+        
+        if (user == null
+                || user.getPassword() == null
+                || user.getUsername() == null
+                ) 
+            return false;
+        
+        UserDB userDB = userDao.findUserByUsername(user.getUsername());
+            
+        if (userDB!=null 
+                && user.getPassword().equals(userDB.getPassword())
                 ) {
-            return "OK";
+            return true;
         }
-        return "NOK";
+        
+        return false;
     }
 }

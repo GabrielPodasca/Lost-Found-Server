@@ -10,6 +10,7 @@ import javax.jws.WebService;
 import javax.ejb.Stateless;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
+import model.User;
 import service.LoginService;
 
 /**
@@ -21,16 +22,16 @@ import service.LoginService;
 public class LoginWS {
 
     @EJB
-    private LoginService loginService;
-
+    private LoginService userService;
+    
     @WebMethod(operationName = "register")
     public String register(@WebParam(name = "username") String username, @WebParam(name = "password") String password) {
-        return loginService.register(username, password);
+        return userService.register(username, password);
     }
 
     @WebMethod(operationName = "login")
-    public String login(@WebParam(name = "username") String username, @WebParam(name = "password") String password) {
-        return loginService.login(username, password);
+    public boolean login(@WebParam(name = "user") User user) {
+        return userService.login(user);
     }
     
 }

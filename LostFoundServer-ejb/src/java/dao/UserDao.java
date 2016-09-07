@@ -10,14 +10,14 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import model.User;
+import model.UserDB;
 
 /**
  *
  * @author Gabi
  */
 @Stateless
-public class UserDao extends AbstractFacade<User> {
+public class UserDao extends AbstractFacade<UserDB> {
 
     @PersistenceContext(unitName = "LostFoundServer-ejbPU")
     private EntityManager em;
@@ -28,13 +28,13 @@ public class UserDao extends AbstractFacade<User> {
     }
 
     public UserDao() {
-        super(User.class);
+        super(UserDB.class);
     }
     
-    public User findUserByUsername(String username){
-        Query q = getEntityManager().createNamedQuery("User.findByUsername");
+    public UserDB findUserByUsername(String username){
+        Query q = getEntityManager().createNamedQuery("UserDB.findByUsername");
         q.setParameter("username", username);
-        List<User> users = q.getResultList();
+        List<UserDB> users = q.getResultList();
         return users.isEmpty() ? null : users.get(0);
     }
 }
