@@ -26,8 +26,8 @@ public class LoginWS {
     private LoginService userService;
     
     @WebMethod(operationName = "register")
-    public String register(@WebParam(name = "username") String username, @WebParam(name = "password") String password) {
-        return userService.register(username, password);
+    public boolean register(@WebParam(name = "user") User user) {
+        return userService.register(user);
     }
 
     @WebMethod(operationName = "login")
