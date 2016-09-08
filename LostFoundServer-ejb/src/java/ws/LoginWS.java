@@ -10,6 +10,7 @@ import javax.jws.WebService;
 import javax.ejb.Stateless;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
+import javax.jws.WebResult;
 import model.User;
 import service.LoginService;
 
@@ -30,7 +31,8 @@ public class LoginWS {
     }
 
     @WebMethod(operationName = "login")
-    public boolean login(@WebParam(name = "user") User user) {
+    @WebResult(name="user")
+    public User login(@WebParam(name = "user") User user) {
         return userService.login(user);
     }
     

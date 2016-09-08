@@ -9,8 +9,9 @@ package model;
  *
  * @author Gabi
  */
+
 public class User {
-    private long id;
+    private int id;
     private String username;
     private String password;
     private String telephone;
@@ -19,7 +20,7 @@ public class User {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -45,6 +46,11 @@ public class User {
 
     public void setTelephone(String telephone) {
         this.telephone = telephone;
+    }
+
+    @Override
+    public String toString() {
+        return (id + " " + username + " " + password + " " + telephone);
     }
     
     

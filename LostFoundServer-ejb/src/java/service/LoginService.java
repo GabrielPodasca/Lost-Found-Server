@@ -35,22 +35,22 @@ public class LoginService {
         return "Userul exista deja";
     }
     
-    public boolean login(User user){
-        
+    public User login(User user){
         if (user == null
-                || user.getPassword() == null
                 || user.getUsername() == null
+                || user.getPassword() == null
                 ) 
-            return false;
+            return null;
         
         UserDB userDB = userDao.findUserByUsername(user.getUsername());
-            
-        if (userDB!=null 
+                 
+        
+        if (userDB != null 
                 && user.getPassword().equals(userDB.getPassword())
                 ) {
-            return true;
+            return user;
         }
         
-        return false;
+        return null;
     }
 }
