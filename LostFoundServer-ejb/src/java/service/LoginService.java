@@ -9,6 +9,7 @@ import dao.UserDao;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
+import model.LoginWSResponse;
 import model.User;
 import model.UserDB;
 
@@ -19,8 +20,9 @@ public class LoginService {
     @EJB
     private UserDao userDao;
 
-    public boolean register(User user){
+    public LoginWSResponse register(User user){
         
+        LoginWSResponse loginWSResponse = new LoginWSResponse();
         if (user == null
                 || user.getUsername() == null
                 || user.getUsername().trim().isEmpty()
@@ -28,7 +30,8 @@ public class LoginService {
                 || user.getPassword().trim().isEmpty()
                 || user.getTelephone() == null
                 || user.getTelephone().trim().isEmpty()) {
-            return false;
+            loginWSResponse.setMessage("Please fill all the data!");
+            return loginWSResponse;
         }
 
         UserDB userDB = userDao.findUserByUsername(user.getUsername());
@@ -38,33 +41,43 @@ public class LoginService {
             userDB.setPassword(user.getPassword());
             userDB.setTelephone(user.getTelephone());
             userDao.create(userDB);
-            return true;
+            loginWSResponse.setUser(user);
+            loginWSResponse.setMessage("Successful registration!");
+            return loginWSResponse;
         }
         
-        return false;
+        loginWSResponse.setMessage("User already exists!");
+        
+        return loginWSResponse;
     }
     
-    public User login(User user){
+    public LoginWSResponse login(User user){
         
+        LoginWSResponse loginWSResponse = new LoginWSResponse();
         if (user == null
                 || user.getUsername() == null
                 || user.getUsername().trim().isEmpty()
                 || user.getPassword() == null
                 || user.getPassword().trim().isEmpty()) {
-            return null;
+            loginWSResponse.setMessage("Please fill all the data!");
+            return loginWSResponse;
         }
         
         UserDB userDB = userDao.findUserByUsername(user.getUsername());
                  
         
-        if (userDB != null 
-                && user.getPassword().equals(userDB.getPassword())
-                ) {
-            user.setId(userDB.getId());
-            user.setTelephone(userDB.getTelephone());
-            return user;
-        }
+        if (userDB != null) {
+            if (user.getPassword().equals(userDB.getPassword())) {
+                user.setId(userDB.getId());
+                user.setTelephone(userDB.getTelephone());
+                loginWSResponse.setUser(user);
+                loginWSResponse.setMessage("Successful login!");
+                return loginWSResponse; 
+            }
+            loginWSResponse.setMessage("Wrong password!");
+        }                         
         
-        return null;
+        loginWSResponse.setMessage("Inexistent user!");
+        return loginWSResponse;
     }
 }

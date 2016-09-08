@@ -11,6 +11,7 @@ import javax.ejb.Stateless;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
+import model.LoginWSResponse;
 import model.User;
 import service.LoginService;
 
@@ -26,13 +27,14 @@ public class LoginWS {
     private LoginService userService;
     
     @WebMethod(operationName = "register")
-    public boolean register(@WebParam(name = "user") User user) {
+    @WebResult(name="loginWSResponse")
+    public LoginWSResponse register(@WebParam(name = "user") User user) {
         return userService.register(user);
     }
 
     @WebMethod(operationName = "login")
-    @WebResult(name="user")
-    public User login(@WebParam(name = "user") User user) {
+    @WebResult(name="loginWSResponse")
+    public LoginWSResponse login(@WebParam(name = "user") User user) {
         return userService.login(user);
     }
     
