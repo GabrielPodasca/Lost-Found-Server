@@ -6,6 +6,7 @@
 package service;
 
 import dao.UserDao;
+import helper.CryptPassword;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
@@ -38,7 +39,8 @@ public class LoginService {
         if(userDB == null){
             userDB = new UserDB();
             userDB.setUsername(user.getUsername());
-            userDB.setPassword(user.getPassword());
+            String password = CryptPassword.cryptWithMD5(user.getPassword());
+            userDB.setPassword(password);
             userDB.setTelephone(user.getTelephone());
             userDao.create(userDB);
             loginWSResponse.setUser(user);
@@ -64,10 +66,10 @@ public class LoginService {
         }
         
         UserDB userDB = userDao.findUserByUsername(user.getUsername());
-                 
-        
+  
         if (userDB != null) {
-            if (user.getPassword().equals(userDB.getPassword())) {
+            String password = CryptPassword.cryptWithMD5(user.getPassword());
+            if (password.equals(userDB.getPassword())) {
                 user.setId(userDB.getId());
                 user.setTelephone(userDB.getTelephone());
                 loginWSResponse.setUser(user);
