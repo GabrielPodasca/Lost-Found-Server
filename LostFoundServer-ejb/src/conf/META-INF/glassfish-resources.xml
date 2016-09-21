@@ -7,7 +7,7 @@
         <property name="databaseName" value="lostfound"/>
         <property name="User" value="lf"/>
         <property name="Password" value="1234"/>
-        <property name="URL" value="jdbc:mysql://localhost:3306/lostfound?zeroDateTimeBehavior=convertToNull"/>
+        <property name="URL" value="jdbc:mysql://localhost:3306/lostfound?zeroDateTimeBehavior=convertToNull&characterEncoding=UTF-8&characterSetResults=UTF-8"/>
         <property name="driverClass" value="com.mysql.jdbc.Driver"/>
     </jdbc-connection-pool>
     <jdbc-resource enabled="true" jndi-name="lf" object-type="user" pool-name="mysql_lostfound_lfPool"/>

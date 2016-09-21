@@ -4,6 +4,9 @@
     <service name="LoginWS">
       <implementation-class>ws.LoginWS</implementation-class>
     </service>
+    <service name="ItemsWS">
+      <implementation-class>ws.ItemsWS</implementation-class>
+    </service>
   </services>
   <clients/>
 </jax-ws>

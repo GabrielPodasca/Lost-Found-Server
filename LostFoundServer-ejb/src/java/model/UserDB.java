@@ -6,7 +6,9 @@
 package model;
 
 import java.io.Serializable;
+import java.util.Collection;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -15,10 +17,12 @@ import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -33,6 +37,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "UserDB.findByUsername", query = "SELECT u FROM UserDB u WHERE u.username = :username"),
     @NamedQuery(name = "UserDB.findByTelephone", query = "SELECT u FROM UserDB u WHERE u.telephone = :telephone")})
 public class UserDB implements Serializable {
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userid")
+    private Collection<ItemDB> itemDBCollection;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -126,6 +133,15 @@ public class UserDB implements Serializable {
     @Override
     public String toString() {
         return "dao.User[ id=" + id + " ]";
+    }
+
+    @XmlTransient
+    public Collection<ItemDB> getItemDBCollection() {
+        return itemDBCollection;
+    }
+
+    public void setItemDBCollection(Collection<ItemDB> itemDBCollection) {
+        this.itemDBCollection = itemDBCollection;
     }
     
 }
