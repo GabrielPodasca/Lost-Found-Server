@@ -6,14 +6,12 @@
 package service;
 
 import dao.ItemDao;
-import java.nio.charset.Charset;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
-import model.Item;
 import model.ItemDB;
-import model.User;
-import model.UserDB;
+import model.ItemList;
 
 @Stateless
 @LocalBean
@@ -21,8 +19,10 @@ public class ItemService {
     @EJB
     private ItemDao itemDao;
     
-public void add(Item item){
+public String add(ItemDB item){
 
+    
+ String message = null;
  if (item == null
                 || item.getName()== null
                 || item.getName().trim().isEmpty()
@@ -33,19 +33,33 @@ public void add(Item item){
                 || item.getLat() <= 0
                 || item.getLng() <= 0 
                 || item.getWhen() == null
-                || item.getUser() == null
-                || (!item.getType().equals(Item.LOST) && !item.getType().equals(Item.FOUND))
+                || item.getUserid()== null
+                || (!item.getType().equals(ItemDB.LOST) && !item.getType().equals(ItemDB.FOUND))
          ) {
-            return;
+            message = "Not all fields are filled!";
+            return message;
         }    
-        
-        ItemDB itemDB = new ItemDB(0, item.getName(), item.getDescription(), item.getLat(), item.getLng(), 
-                        item.getAddress(), item.getWhen(), item.getType()
-                    );
-        User user = item.getUser();
-        UserDB userDB = new UserDB(user.getId(), user.getUsername(), user.getPassword(), user.getTelephone());
-        itemDB.setUserid(userDB);
-        itemDao.create(itemDB);
+        try {
+            itemDao.create(item);
+            message = "OK";
+            return message;           
+        } catch (Exception e) {
+            message = "Could not create item!";
+            return message;
+        }
+
                         
 }
+
+    public ItemList get() {
+        ItemList itemList = null;
+        try {
+            List<ItemDB> items = itemDao.findAll();
+            itemList = new ItemList(items);            
+        } catch (Exception e) {
+            itemList = new ItemList();
+        }
+
+        return itemList;
+    }
 }

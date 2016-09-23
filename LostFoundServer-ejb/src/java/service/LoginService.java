@@ -11,7 +11,6 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
 import model.LoginWSResponse;
-import model.User;
 import model.UserDB;
 
 @Stateless
@@ -21,7 +20,7 @@ public class LoginService {
     @EJB
     private UserDao userDao;
 
-    public LoginWSResponse register(User user){
+    public LoginWSResponse register(UserDB user){
         
         LoginWSResponse loginWSResponse = new LoginWSResponse();
         if (user == null
@@ -37,15 +36,22 @@ public class LoginService {
 
         UserDB userDB = userDao.findUserByUsername(user.getUsername());
         if(userDB == null){
-            userDB = new UserDB();
-            userDB.setUsername(user.getUsername());
-            String password = CryptPassword.cryptWithMD5(user.getPassword());
-            userDB.setPassword(password);
-            userDB.setTelephone(user.getTelephone());
-            userDao.create(userDB);
-            loginWSResponse.setUser(user);
-            loginWSResponse.setMessage("Successful registration!");
-            return loginWSResponse;
+            try {
+                userDB = new UserDB();
+                userDB.setUsername(user.getUsername());           
+                String password = CryptPassword.cryptWithMD5(user.getPassword());
+                userDB.setPassword(password);
+                userDB.setTelephone(user.getTelephone());
+                userDao.create(userDB);            
+                loginWSResponse.setUser(user);
+                loginWSResponse.setMessage("Successful registration!");
+                return loginWSResponse;              
+            }
+            catch(Exception e) {
+                loginWSResponse.setMessage("Could not register user!");
+                return loginWSResponse;
+           }           
+
         }
         
         loginWSResponse.setMessage("User already exists!");
@@ -53,7 +59,7 @@ public class LoginService {
         return loginWSResponse;
     }
     
-    public LoginWSResponse login(User user){
+    public LoginWSResponse login(UserDB user){
         
         LoginWSResponse loginWSResponse = new LoginWSResponse();
         if (user == null

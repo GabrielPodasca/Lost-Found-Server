@@ -10,22 +10,22 @@ package model;
  * @author Gabi
  */
 public class LoginWSResponse {
-    private User user;
+    private UserDB user;
     private String message;
 
     public LoginWSResponse() {
     }
 
-    public LoginWSResponse(User user, String message) {
+    public LoginWSResponse(UserDB user, String message) {
         this.user = user;
         this.message = message;
     }
 
-    public User getUser() {
+    public UserDB getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(UserDB user) {
         this.user = user;
     }
 

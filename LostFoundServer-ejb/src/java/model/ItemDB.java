@@ -23,7 +23,9 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
 /**
  *
@@ -32,6 +34,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Entity
 @Table(name = "items")
 @XmlRootElement
+@XmlType(propOrder = { "id", "name", "description", "lat", "lng", "address", "when", "type", "userid" })
 @NamedQueries({
     @NamedQuery(name = "ItemDB.findAll", query = "SELECT i FROM ItemDB i"),
     @NamedQuery(name = "ItemDB.findById", query = "SELECT i FROM ItemDB i WHERE i.id = :id"),
@@ -42,6 +45,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "ItemDB.findByType", query = "SELECT i FROM ItemDB i WHERE i.type = :type")})
 public class ItemDB implements Serializable {
 
+    public static final String LOST = "LOST";
+    public static final String FOUND = "FOUND";
+    
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -169,6 +175,7 @@ public class ItemDB implements Serializable {
         this.type = type;
     }
 
+    @XmlElement(name="user")
     public UserDB getUserid() {
         return userid;
     }

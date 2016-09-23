@@ -12,7 +12,7 @@ import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
 import model.LoginWSResponse;
-import model.User;
+import model.UserDB;
 import service.LoginService;
 
 /**
@@ -28,13 +28,13 @@ public class LoginWS {
     
     @WebMethod(operationName = "register")
     @WebResult(name="loginWSResponse")
-    public LoginWSResponse register(@WebParam(name = "user") User user) {
+    public LoginWSResponse register(@WebParam(name = "user") UserDB user) {
         return userService.register(user);
     }
 
     @WebMethod(operationName = "login")
     @WebResult(name="loginWSResponse")
-    public LoginWSResponse login(@WebParam(name = "user") User user) {
+    public LoginWSResponse login(@WebParam(name = "user") UserDB user) {
         return userService.login(user);
     }
     
